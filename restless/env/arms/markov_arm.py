@@ -62,6 +62,6 @@ class MarkovArm:
         """
         return self.reward_vector.T @ self.state_vector
 
-    def observe(self) -> Tuple[int, float]:
+    def sense(self) -> Tuple[int, float]:
         "Returns current state and associated reward"
         return self.state, self.reward()
