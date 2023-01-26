@@ -4,8 +4,8 @@ Some standard MAB environments
 
 from typing import List, Tuple
 
-from restless.env.arms.markov_arm import MarkovArm
-from restless.env.arms.channel import Channel
+from restless.envs.arms.markov_arm import MarkovArm
+from restless.envs.arms.channel import Channel
 
 
 class RestlessMAB:  # pylint: disable=too-few-public-methods

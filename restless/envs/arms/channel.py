@@ -5,7 +5,7 @@ Channel arm structure
 
 import numpy as np
 
-from restless.env.arms.markov_arm import MarkovArm
+from restless.envs.arms.markov_arm import MarkovArm
 
 
 class Channel(MarkovArm):

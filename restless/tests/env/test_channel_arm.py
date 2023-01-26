@@ -1,6 +1,6 @@
 import numpy as np
 
-from restless.env.arms.channel import Channel
+from restless.envs.arms.channel import Channel
 
 channel = Channel(0.8, 0.6, init_state=1)
 
