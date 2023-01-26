@@ -35,7 +35,6 @@ class MarkovArm:
         assert init_state < self.n_states
         self.state = init_state
 
-        print(reward_vector)
         assert len(reward_vector) == self.n_states
         self.reward_vector = np.reshape(reward_vector, (self.n_states,))
 
