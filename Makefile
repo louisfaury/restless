@@ -9,10 +9,13 @@ lint:
 	python -m pylint -j 0 restless/
 
 black:
-	python -m black -l 120 restless/
+	python -m black -l 110 restless/
 
 mypy:
-	python -m mypy
+	python -m mypy --ignore-missing-imports restless/
+
+test:
+	python -m pytest
 
 .PHONY: help
 
