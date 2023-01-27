@@ -1,13 +1,13 @@
 """
 Markovian arm structure
 
-TODO: Compute stationary distribution
 TODO: Protect state
 """
 
 from typing import Tuple
 
 import numpy as np
+import scipy.linalg
 
 
 class MarkovArm:
@@ -64,3 +64,36 @@ class MarkovArm:
     def sense(self) -> Tuple[int, float]:
         "Returns current state and associated reward"
         return self.state, self.reward()
+
+    def stationary_distribution(self):
+        """
+        Returns the Markov chain's stationary distribution
+        Watch out: we assume existence and uniqueness of the stationary distribution
+                    i.e. the chain is ergodic
+                    i.e. the transition matrix has eigen-value 1 with multiplicity 1
+        TODO: implement further check for MC ergodicity
+        """
+        eig_values, eig_vector = scipy.linalg.eig(self.transition_matrix, left=True, right=False)  # left eigen-vectors
+
+        # order according to descending eig_values
+        order_permutation = np.argsort(eig_values)
+
+        max_eig_values = eig_values[order_permutation[-1]]
+        # the eigvector associated with highest eigvalue is (almost) the stationary distribution
+        max_eig_vector = eig_vector[:, order_permutation[-1]]
+
+        # simple check for ergodicity
+        assert max_eig_values == 1
+        assert eig_values[order_permutation[-2]] != 1
+        assert len(np.unique([np.sign(e) for e in max_eig_vector]))==1
+
+        # de-normalized eigen-vector (stationary distribution sums to 1)
+        # turn positive if needed
+        stationary_distribution = np.abs(max_eig_vector / np.sum(max_eig_vector))
+        return stationary_distribution
+
+    def stationary_reward(self) -> float:
+        """
+        Returns the arm's stationary reward
+        """
+        return float(self.stationary_distribution().T @ self.reward_vector)

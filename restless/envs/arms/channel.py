@@ -29,4 +29,11 @@ class Channel(MarkovArm):
             init_state=init_state,
         )
 
-        self.stationary_distribution = np.array([1 - q / (1 + q - p), q / (1 + q - p)])
+    def stationary_distribution(self):
+        """
+        In this case we have a closed form for the stationary distribution
+        """
+        p = self.transition_matrix[1, 1]
+        q = 1 - self.transition_matrix[0, 0]
+
+        return np.array([1 - q / (1 + q - p), q / (1 + q - p)])
