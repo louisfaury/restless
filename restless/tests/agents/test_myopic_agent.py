@@ -40,3 +40,8 @@ def test_myopic_with_dominated_arms():
         arm_play[t] = action
 
     np.testing.assert_equal(arm_play, np.zeros(horizon))
+
+    # # we also run a check on the belief-vector maintenant by myopic
+    # the belief for arm that was not played should be close to that arm's stationary distribution
+    worst_arm_belief = agent.belief_matrix[1]
+    np.testing.assert_almost_equal(worst_arm_belief, worst_agent.stationary_distribution())
