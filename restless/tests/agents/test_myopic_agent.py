@@ -1,3 +1,7 @@
+"""
+Myopic testing
+"""
+
 import numpy as np
 from restless.agents import Myopic
 from restless.envs import RestlessMAB, Channel

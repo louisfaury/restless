@@ -4,13 +4,7 @@ import pytest
 from restless.envs.arms.channel import Channel
 
 
-@pytest.mark.parametrize("p, q",
-                         [
-                             (0.8, 0.6),
-                             (0.3, 0.8),
-                             (0.9, 0.1)
-                         ]
-)
+@pytest.mark.parametrize("p, q", [(0.8, 0.6), (0.3, 0.8), (0.9, 0.1)])
 def test_transition_distribution(p, q):
     """
     Tests the one-step transition by Monte-Carlo
@@ -31,14 +25,8 @@ def test_transition_distribution(p, q):
     np.testing.assert_almost_equal(q_estimate, q, decimal=2)
 
 
-@pytest.mark.parametrize("p, q",
-                         [
-                             (0.8, 0.6),
-                             (0.3, 0.8),
-                             (0.9, 0.1)
-                         ]
-)
-def test_stationary_distribution(p,q):
+@pytest.mark.parametrize("p, q", [(0.8, 0.6), (0.3, 0.8), (0.9, 0.1)])
+def test_stationary_distribution(p, q):
     """
     Checks that the stationary distribution estimates and its closed form are close, via Monte Carlo
     """

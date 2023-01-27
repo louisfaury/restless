@@ -1,3 +1,6 @@
+"""
+Testing best-stationary agent
+"""
 
 import numpy as np
 from restless.agents import BestStationaryArmAgent
@@ -18,8 +21,7 @@ def test_stationary_with_dominated_arms():
 
     # # agent
     agent = BestStationaryArmAgent(
-        n_arms=2,
-        stationary_rewards=[arm.stationary_reward() for arm in env.arm_list]
+        n_arms=2, stationary_rewards=[arm.stationary_reward() for arm in env.arm_list]
     )
 
     # # run experiment
@@ -33,4 +35,3 @@ def test_stationary_with_dominated_arms():
         arm_play[t] = action
 
     np.testing.assert_equal(arm_play, np.zeros(horizon))
-

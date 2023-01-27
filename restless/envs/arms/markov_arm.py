@@ -73,7 +73,9 @@ class MarkovArm:
                     i.e. the transition matrix has eigen-value 1 with multiplicity 1
         TODO: implement further check for MC ergodicity
         """
-        eig_values, eig_vector = scipy.linalg.eig(self.transition_matrix, left=True, right=False)  # left eigen-vectors
+        eig_values, eig_vector = scipy.linalg.eig(
+            self.transition_matrix, left=True, right=False
+        )  # left eigen-vectors
 
         # order according to descending eig_values
         order_permutation = np.argsort(eig_values)
@@ -85,7 +87,7 @@ class MarkovArm:
         # simple check for ergodicity
         assert max_eig_values == 1
         assert eig_values[order_permutation[-2]] != 1
-        assert len(np.unique([np.sign(e) for e in max_eig_vector]))==1
+        assert len(np.unique([np.sign(e) for e in max_eig_vector])) == 1
 
         # de-normalized eigen-vector (stationary distribution sums to 1)
         # turn positive if needed
