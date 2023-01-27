@@ -2,3 +2,5 @@ black
 mypy
 pytest
 pylint
+sphinx
+sphinx_rtd_theme

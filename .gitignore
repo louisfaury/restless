@@ -33,3 +33,6 @@ MANIFEST
 # Ignore OS X metadata
 .DS_Store
 ._.DS_Store
+
+# Sphinx documentation
+docs/_build/

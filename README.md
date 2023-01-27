@@ -9,7 +9,7 @@ source .venv/bin/activate
 ### Install requirements
 ```
 pip3 install -r requirements.txt
-pip3 install -r tests-requirements.txt
+pip3 install -r test-requirements.txt
 ```
 
 ### Install library
