@@ -1,7 +1,5 @@
 """
 Myopic agent
-
-TODO: test myopic
 """
 
 from typing import List
@@ -43,8 +41,8 @@ class Myopic(Agent):
         """
         The myopic policy plays the arm which belief reward is highest
         """
-        if np.alltrue(self.time_since_last_observed == 0):
-            return np.random.randint(0, self.n_arms - 1)
+        if np.any(self.time_since_last_observed == 0):
+            return np.where(self.time_since_last_observed == 0)[0][0]
 
         return int(
             np.argmax(

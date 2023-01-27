@@ -30,6 +30,13 @@ class RestlessMAB:  # pylint: disable=too-few-public-methods
 
         return state, reward
 
+    def reset_state(self, state: List[int]) -> None:
+        """
+        Resets all the arm state
+        """
+        for i, arm in enumerate(self.arm_list):
+            arm.state = state[i]
+
 
 class ChannelAccessMAB(RestlessMAB):  # pylint: disable=too-few-public-methods
     """
