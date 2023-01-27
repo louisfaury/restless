@@ -11,7 +11,7 @@ def test_myopic_with_dominated_arms():
 
     # # Environment
     best_agent = Channel(0.8, 0.4)
-    # manually changing the reward of worst_agent to guarantees its reward vector is dominated
+    # manually changing the reward of worst_agent to guarantees it is dominated by the best_agent
     worst_agent = Channel(0.8, 0.4)
     worst_agent.reward_vector = np.array([-1, -1])
 

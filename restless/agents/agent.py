@@ -30,7 +30,7 @@ class Agent:
 
 class StubbornAgent(Agent):
     """
-    Agent that constantly plays the same action
+    Agent that constantly plays the same action (for debugging purpose)
     """
 
     def act(self) -> int:
