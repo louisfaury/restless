@@ -27,6 +27,12 @@ class Agent:
         """
         raise NotImplementedError
 
+    def report(self):
+        """
+        Returns internal state, for logging purposes
+        """
+        return {}
+
 
 class StubbornAgent(Agent):
     """

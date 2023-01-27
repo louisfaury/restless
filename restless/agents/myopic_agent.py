@@ -2,7 +2,7 @@
 Myopic agent
 """
 
-from typing import List
+from typing import List, Dict
 
 import numpy as np
 
@@ -41,7 +41,7 @@ class Myopic(Agent):
         """
         The myopic policy plays the arm which belief reward is highest
         """
-        if np.any(self.time_since_last_observed == 0):
+        if np.any(self.time_since_last_observed == 0):  # round-robin to enforce belief initialisation
             return np.where(self.time_since_last_observed == 0)[0][0]
 
         return int(
@@ -59,9 +59,14 @@ class Myopic(Agent):
         """
         # Updating first the sufficient statistics
         self.last_observed_state[arm] = state
-        self.time_since_last_observed[arm] = 0
+        self.time_since_last_observed[arm] = 1
         for arm_ in range(self.n_arms):
-            self.time_since_last_observed[arm_] += 1
+            if arm_ == arm:
+                self.time_since_last_observed[arm] = 1
+            else:
+                if self.time_since_last_observed[arm_] != 0:
+                    # update only if the arm has already been pulled (useful at initialisation)
+                    self.time_since_last_observed[arm_] += 1
 
         # Updating the belief vector for arms that were not sense
         for arm_ in range(self.n_arms):
@@ -77,3 +82,12 @@ class Myopic(Agent):
         state_vector = np.array([s == state for s in range(state_space_size)]).astype(int)
         new_belief = (state_vector.T @ self.transition_matrix_list[arm]).T
         self.belief_matrix[arm] = new_belief
+
+    def report(self) -> Dict:
+        """
+        Report internal belief
+        If all arms has only two state, returns only the second belief for each arm(sufficient statistic)
+        """
+        if np.all([len(belief_vector) == 2 for belief_vector in self.belief_matrix]):
+            return {"belief": [self.belief_matrix[arm][1] for arm in range(self.n_arms)]}
+        return {"belief": self.belief_matrix}
