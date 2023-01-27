@@ -5,17 +5,17 @@ Myopic vs. BestStationaryArm
 TODO: easy logging
 TODO: visualisation
 """
+import matplotlib.pyplot as plt
 
-import numpy as np
-
-from restless.agents import Agent, BestStationaryArmAgent, Myopic
-from restless.envs import RestlessMAB, ChannelAccessMAB
+from restless.agents import BestStationaryArmAgent, Myopic
+from restless.envs import ChannelAccessMAB
+from restless.bandit_game import run_exp
 
 
 def main() -> None:
-    n_arms = 50
-    horizon = 10_000
-    p, q = 0.9, 0.1
+    n_arms = 10
+    horizon = 300
+    p, q = 0.8, 0.4
 
     # Environment
     env = ChannelAccessMAB(n_arms, p, q)
@@ -26,25 +26,26 @@ def main() -> None:
         n_arms, [arm.transition_matrix for arm in env.arm_list], [arm.reward_vector for arm in env.arm_list]
     )
 
-    stationary_reward = run_exp(stationary_agent, env, horizon)
-    myopic_reward = run_exp(myopic_agent, env, horizon)
-    print(stationary_reward / horizon, myopic_reward / horizon)
+    # # Compare mean rewards
+    stationary_report = run_exp(stationary_agent, env, horizon)
+    print(f"StationaryAgent mean reward is {stationary_report['reward'].mean()}")
 
+    myopic_report = run_exp(myopic_agent, env, horizon)
+    print(f"Myopic mean reward is {myopic_report['reward'].mean()}")
 
-def run_exp(agent: Agent, env: RestlessMAB, horizon: int) -> float:
-    """
-    Returns the total reward accumulated by an agent when playing for horizon time-steps.
-    """
-    env.reset_state([0 for _ in range(len(env.arm_list))])
-    total_reward = 0.0
-    for _ in range(horizon):
-        arm = agent.act()
-        if len(np.array([arm])) > 1:
-            raise ValueError(f"{arm}")
-        state, reward = env.sense(arm)
-        agent.update(state, arm)
-        total_reward += reward
-    return float(total_reward)
+    # Display belief evolution for myopic
+    plt.figure(figsize=(12, 8))
+    beliefs = myopic_report["belief"].values
+
+    for arm in range(n_arms):
+        plt.plot([belief[arm] for belief in beliefs], label=f"arm {arm}")
+    stationary_distribution = env.arm_list[0].stationary_distribution()[1]
+    plt.plot([0, horizon], [stationary_distribution, stationary_distribution], label="stationary")
+    plt.xlabel("Round")
+    plt.ylabel("Belief")
+    plt.title("Evolution of belief's under a myopic strategy")
+    plt.legend()
+    plt.show()
 
 
 if __name__ == "__main__":
