@@ -19,7 +19,6 @@ class Channel(MarkovArm):
         p: probability of staying in 1 starting from 1
         q: probability of going to 1 starting from 0
         """
-
         transition_matrix = np.array([[1 - q, q], [1 - p, p]])
         reward_vector = np.array([0, 1])
         super().__init__(
@@ -28,12 +27,14 @@ class Channel(MarkovArm):
             reward_vector=reward_vector,
             init_state=init_state,
         )
+        self.p = p
+        self.q = q
 
     def stationary_distribution(self):
         """
         In this case we have a closed form for the stationary distribution
         """
-        p = self.transition_matrix[1, 1]
-        q = 1 - self.transition_matrix[0, 0]
+        p = self.p
+        q = self.q
 
         return np.array([1 - q / (1 + q - p), q / (1 + q - p)])
