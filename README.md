@@ -1,3 +1,5 @@
+[![Pylint](https://github.com/louisfaury/restless/actions/workflows/pylint.yml/badge.svg)](https://github.com/louisfaury/restless/actions/workflows/pylint.yml)
+
 ## Manual install
 
 ### Create and activate virtualenv
