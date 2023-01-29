@@ -44,4 +44,6 @@ class ChannelAccessMAB(RestlessMAB):  # pylint: disable=too-few-public-methods
     """
 
     def __init__(self, n_arms: int, p: float, q: float):
+        self.p = p
+        self.q = q
         super().__init__([Channel(p, q) for _ in range(n_arms)])
