@@ -17,6 +17,10 @@ mypy:
 test:
 	python -m pytest
 
+coverage:
+	coverage run -m pytest
+	coverage report -m
+
 .PHONY: help
 
 help: # Run `make help` to get help on the make commands
