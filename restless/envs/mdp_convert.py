@@ -4,7 +4,7 @@ For now, only implement for the ChannelAccessMAB model
 TODO test big time
 TODO check size with all permutations of size k
 """
-from typing import Tuple, Dict, Callable, List
+from typing import Callable
 
 import itertools
 import numpy as np
