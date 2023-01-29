@@ -56,6 +56,7 @@ class DiscountedMarkovDecisionProcess(MarkovDecisionProcess):
     ):
         super().__init__(n_states, n_actions, transition_kernel, reward_function)
         self.discount = discount
+        assert (self.discount >= 0) & (self.discount < 1)
 
 
 class FiniteHorizonMarkovDecisionProcess(MarkovDecisionProcess):
