@@ -6,7 +6,7 @@ TODO: test myopic
 from typing import List
 
 import numpy as np
-from restless.control import MDP
+from restless.control.mdp import MarkovDecisionProcess as MDP
 
 
 class Policy:
