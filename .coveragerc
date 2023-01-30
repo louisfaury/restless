@@ -1,0 +1,7 @@
+[run]
+source = restless
+relative_files = true
+
+[report]
+omit = restless/scripts/*
+

@@ -1,5 +1,6 @@
 install: ## [Local development, CPU] Upgrade pip, install requirements, install package.
 	python -m pip install -U pip && python -m pip install -U setuptools wheel
+	python -m pip install -r requirements.txt
 	python -m pip install -e "."
 
 install-dev: ## [Local development] Install test requirements and pre-commit
@@ -15,10 +16,10 @@ mypy:
 	python -m mypy --ignore-missing-imports restless/
 
 test:
-	python -m pytest
+	python -m pytest tests/
 
 coverage:
-	coverage run -m pytest
+	coverage run -m pytest tests/
 	coverage report -m
 
 .PHONY: help
