@@ -32,15 +32,3 @@ class Agent:
         Returns internal state, for logging purposes
         """
         return {}
-
-
-class StubbornAgent(Agent):
-    """
-    Agent that constantly plays the same action (for debugging purpose)
-    """
-
-    def act(self) -> int:
-        return 0
-
-    def update(self, arm: int, state: int) -> None:
-        pass
