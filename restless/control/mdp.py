@@ -9,7 +9,8 @@ import numpy as np
 
 class MarkovDecisionProcess:
     """
-    Finite state and action space MDP class
+    Finite state and action space MDP class.
+    Transition and rewards are assumed stationary.
     Default is to consider average-cost objective.
     """
 

@@ -9,15 +9,6 @@ import numpy as np
 from restless.control import MDP, DiscountedMDP, FiniteHorizonMDP, Policy
 
 
-def get_vectorial_representation(pi: Policy, mdp: MDP) -> Tuple[np.array, np.array]:
-    """
-    Returns the policy vectorial representation of reward and transition for the concerned MDP
-    """
-    assert len(pi.actions) == mdp.n_actions
-    assert max(pi.actions) < mdp.n_states
-    return get_transition_matrix(pi, mdp), get_reward_vector(pi, mdp)
-
-
 def get_reward_vector(pi: Policy, mdp: MDP) -> np.array:
     # # Sets up the vector based representation of the policy's reward vector on some MDP
     reward_vector = np.array([mdp.reward_function[pi.actions[state]][state] for state in range(mdp.n_states)])

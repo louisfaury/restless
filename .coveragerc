@@ -3,5 +3,10 @@ source = restless
 relative_files = true
 
 [report]
-omit = restless/scripts/*
+omit = restless/scripts/*, */__init__.py
+exclude_lines =
+    pragma: no cover
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
 

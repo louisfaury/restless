@@ -9,7 +9,9 @@ from restless.agents import Agent
 from restless.envs import RestlessMAB
 
 
-def run_exp(agent: Agent, env: RestlessMAB, horizon: int, verbose: bool = False) -> pd.DataFrame:
+def run_exp(
+    agent: Agent, env: RestlessMAB, horizon: int, verbose: bool = False
+) -> pd.DataFrame:  # pragma: no cover
     """
     Returns the total reward accumulated by an agent when playing for horizon time-steps.
     """
