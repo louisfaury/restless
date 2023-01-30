@@ -26,6 +26,7 @@ jobs:
           make coverage
           coverage run -m pytest tests/
           coverage report -m
+          git config --global --add safe.directory /github/workspace
 
       - name: Coverage comment
         id: coverage_comment
