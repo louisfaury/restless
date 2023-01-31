@@ -1,31 +1,26 @@
 """
 Functions to a RestlessMAB environment to a MDP
 For now, only implement for the ChannelAccessMAB model
-TODO test big time
-TODO check size with all permutations of size k
 """
-from typing import Callable
+from typing import Callable, Union, Tuple, Dict
 
 import itertools
+import logging
 import numpy as np
-from restless.envs import ChannelAccessMAB, RestlessMAB
+from restless.envs import ChannelAccessMAB
 from restless.control import MDP
 
 
-def convert_to_mdp(restless: RestlessMAB, truncate: int = 10) -> MDP:
-    """
-    Returns the belief-MDP, truncated after :truncate: steps in the countable belief space
-    """
-    if isinstance(restless, ChannelAccessMAB):
-        return convert_channel_to_mdp(restless, truncate)
-    else:
-        raise NotImplementedError
+logger = logging.getLogger(__name__)
 
 
-def convert_channel_to_mdp(chanel_mab: ChannelAccessMAB, truncate: int = 10):
+def convert_channel_to_mdp(
+    chanel_mab: ChannelAccessMAB, truncate: int = 10, return_belief_idx: bool = False
+) -> Union[MDP, Tuple[MDP, Tuple[Dict, Dict]]]:
     """
     Belief MDP for a ChannelAccessMAB (easier and less expensive than general case)
     """
+    logger.info(f"Converting ChannelMAB access with truncate={truncate}")
     p = chanel_mab.p
     q = chanel_mab.q
 
@@ -55,6 +50,7 @@ def convert_channel_to_mdp(chanel_mab: ChannelAccessMAB, truncate: int = 10):
     all_beliefs = [list(x) for x in itertools.product(per_arm_belief, repeat=len(chanel_mab.arm_list))]
     idx_to_belief = dict(enumerate(all_beliefs))
     belief_to_idx = {tuple(belief): k for k, belief in enumerate(all_beliefs)}
+    logger.debug(f"Associated MDP has {len(all_beliefs)} states.")
 
     # # MDP construction
     n_states = len(all_beliefs)
@@ -89,4 +85,7 @@ def convert_channel_to_mdp(chanel_mab: ChannelAccessMAB, truncate: int = 10):
             transition_kernel[state, next_idx_if_1] = belief[action]
         transition_matrix.append(transition_kernel)
 
-    return MDP(n_states, n_actions, transition_matrix, reward_function)
+    mdp = MDP(n_states, n_actions, transition_matrix, reward_function)
+    if return_belief_idx:
+        return mdp, (idx_to_belief, belief_to_idx)
+    return mdp
