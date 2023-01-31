@@ -1,11 +1,11 @@
 """
-Testing policy evaluation routine on toy MDPs
+Testing discounted policy evaluation routine on toy MDPs
 """
 
 import numpy as np
 import pytest
 
-from restless.control.solvers.policy_evaluation import policy_evaluation
+from restless.control.solvers.policy_evaluation import discounted_policy_evaluation
 from restless.control import DiscountedMDP, Policy
 
 
@@ -27,7 +27,7 @@ def test_policy_evaluation_constant_reward(discount, reward, policy_actions):
     mdp = DiscountedMDP(2, 2, transition_matrix, reward_vector, discount)
     pi = Policy(policy_actions)
 
-    np.testing.assert_array_almost_equal(policy_evaluation(pi, mdp), (reward / (1 - discount)) * np.ones((2,)))
+    np.testing.assert_array_almost_equal(discounted_policy_evaluation(pi, mdp), (reward / (1 - discount)) * np.ones((2,)))
 
 
 @pytest.mark.parametrize(
@@ -48,4 +48,4 @@ def test_policy_evaluation_non_communicating(discount, reward_vector_0, reward_v
 
     pi = Policy(policy_actions)
 
-    np.testing.assert_array_almost_equal(policy_evaluation(pi, mdp), expected)
+    np.testing.assert_array_almost_equal(discounted_policy_evaluation(pi, mdp), expected)
