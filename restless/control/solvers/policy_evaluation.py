@@ -57,10 +57,8 @@ def average_reward_policy_evaluation(
     # the under-determined system writes:
     # [e, Id-P][rho \\ h] = r rewritten below as Ax = y
     y = get_reward_vector(pi, mdp)
-    A = np.array(  # pylint: disable=invalid-name
-        [np.hstack([1, row]) for row in np.eye(mdp.n_states) - transition_matrix]
-    )
-    x = np.linalg.lstsq(A, y, rcond=None)[0]
+    mat_a = np.array([np.hstack([1, row]) for row in np.eye(mdp.n_states) - transition_matrix])
+    x = np.linalg.lstsq(mat_a, y, rcond=None)[0]
 
     gain = x[0]
 
