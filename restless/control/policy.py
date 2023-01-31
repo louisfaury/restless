@@ -27,5 +27,5 @@ class MyopicPolicy(Policy):
 
     def __init__(self, mdp: MDP):
         all_rewards = np.array(mdp.reward_function).reshape(mdp.n_actions, mdp.n_states)
-        myopic_actions = list(np.argmax(all_rewards, axis=1))
+        myopic_actions = list(np.argmax(all_rewards, axis=0))
         super().__init__(myopic_actions)
