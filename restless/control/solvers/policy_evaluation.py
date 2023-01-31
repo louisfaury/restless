@@ -47,8 +47,9 @@ def average_reward_policy_evaluation(
     if check_nb_irreducible_class:
         # the policy should have only one irreducible class
         # i.e only one eigen-value equal to 1, all the others with modulus <1
+        tol = 1e-6
         eigval = eigvals(transition_matrix)
-        multiplicity_eigenvalue_1 = len(eigval[np.where(eigval == 1)[0]])
+        multiplicity_eigenvalue_1 = len(eigval[np.where(eigval >= 1 - tol)[0]])
         assert multiplicity_eigenvalue_1 == 1
 
     # solves the under-constrained linear system rho•e + h = r + Ph

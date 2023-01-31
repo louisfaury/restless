@@ -38,7 +38,6 @@ class MarkovDecisionProcess:
         )
         assert np.all([self.reward_function[k].shape == (self.n_states,) for k in range(self.n_actions)])
         # all transition matrix are stochastic
-        print([self.transition_kernel[k].sum(axis=1) == 1.0 for k in range(self.n_actions)])
         assert np.allclose(
             [self.transition_kernel[k].sum(axis=1) for k in range(self.n_actions)],
             np.ones((self.n_actions, self.n_states)),
@@ -62,6 +61,10 @@ class DiscountedMarkovDecisionProcess(MarkovDecisionProcess):
         super().__init__(n_states, n_actions, transition_kernel, reward_function)
         self.discount = discount
         assert (self.discount >= 0) & (self.discount < 1)
+
+    @classmethod
+    def from_mdp(cls, mdp: MarkovDecisionProcess, discount):
+        return cls(mdp.n_states, mdp.n_actions, mdp.transition_kernel, mdp.reward_function, discount)
 
 
 class FiniteHorizonMarkovDecisionProcess(MarkovDecisionProcess):
