@@ -1,9 +1,6 @@
 """
 A simple experiment in a MultiChannelAccess scenario
 Myopic vs. BestStationaryArm
-
-TODO: easy logging
-TODO: visualisation
 """
 import matplotlib.pyplot as plt
 
