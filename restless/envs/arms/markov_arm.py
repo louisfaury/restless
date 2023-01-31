@@ -72,6 +72,7 @@ class MarkovArm:
                     i.e. the chain is ergodic
                     i.e. the transition matrix has eigen-value 1 with multiplicity 1
         TODO: implement further check for MC ergodicity
+        TODO: the current checks are a bit sketchy (or downright false) -- eigen-values are complex numbers!
         """
         eig_values, eig_vector = scipy.linalg.eig(
             self.transition_matrix, left=True, right=False
