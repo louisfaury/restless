@@ -1,12 +1,12 @@
 """
 Policy evaluation for finite horizon, discounted and average MDPs
-TODO test vectorial representation
 """
-from typing import Tuple
+from typing import Tuple, Union
 
 import numpy as np
+from scipy.linalg import eigvals
 
-from restless.control import MDP, DiscountedMDP, FiniteHorizonMDP, Policy
+from restless.control import MDP, DiscountedMDP, Policy
 
 
 def get_reward_vector(pi: Policy, mdp: MDP) -> np.array:
@@ -23,19 +23,6 @@ def get_transition_matrix(pi: Policy, mdp: MDP) -> np.array:
     return transition_matrix
 
 
-def policy_evaluation(pi: Policy, mdp: MDP) -> np.array:
-    """
-    Runs policy evaluation given the MDP type. Returns the value function as a vector.
-    """
-    if isinstance(mdp, DiscountedMDP):
-        return discounted_policy_evaluation(pi, mdp)
-    elif isinstance(mdp, FiniteHorizonMDP):
-        raise NotImplementedError  # not done yet
-
-    # by default the MDP is assumed to be evaluated under average-reward
-    return average_reward_policy_evaluation(pi, mdp)
-
-
 def discounted_policy_evaluation(pi: Policy, mdp: DiscountedMDP) -> np.array:
     lambd = mdp.discount
     transition_matrix = get_transition_matrix(pi, mdp)
@@ -43,6 +30,38 @@ def discounted_policy_evaluation(pi: Policy, mdp: DiscountedMDP) -> np.array:
     return np.linalg.solve(np.eye(mdp.n_states) - lambd * transition_matrix, reward_vector)
 
 
-def average_reward_policy_evaluation(pi: Policy, mdp: MDP) -> np.array:
-    # TODO
-    raise NotImplementedError
+def average_reward_policy_evaluation(
+    pi: Policy, mdp: MDP, return_bias: bool = True, check_nb_irreducible_class: bool = False
+) -> Union[float, Tuple[float, np.array]]:
+    """
+    Policy evaluation for an average-gain MDP
+    *Important* Assumes that the policy's gain is constant,
+                i.e that the policy induces a Markov chain with a single recurrent class
+    If unsure about this property, you can pass a parameter (:check_nb_irreducible_class:) that will trigger
+    an error if the chain's has several irreducible class.
+
+    Returns the policy's constant gain, as well as the bias vector if return_bias is set to True.
+    """
+    transition_matrix = get_transition_matrix(pi, mdp)
+
+    if check_nb_irreducible_class:
+        # the policy should have only one irreducible class
+        # i.e only one eigen-value equal to 1, all the others with modulus <1
+        eigval = eigvals(transition_matrix)
+        multiplicity_eigenvalue_1 = len(eigval[np.where(eigval == 1)[0]])
+        assert multiplicity_eigenvalue_1 == 1
+
+    # solves the under-constrained linear system rho•e + h = r + Ph
+    # where rho is the average gain, h the bias, r the reward vector and P the transition matrix
+    # here we use the pseudo-inverse to compute the solution with minimal norm
+    # the under-determined system writes:
+    # [e, Id-P][rho \\ h] = r rewritten below as Ax = y
+    y = get_reward_vector(pi, mdp)
+    A = np.array([np.hstack([1, row]) for row in np.eye(mdp.n_states) - transition_matrix])
+    x = np.linalg.lstsq(A, y, rcond=None)[0]
+
+    gain = x[0]
+
+    if return_bias:
+        return gain, x[1:]
+    return gain

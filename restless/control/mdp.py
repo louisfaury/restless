@@ -38,7 +38,11 @@ class MarkovDecisionProcess:
         )
         assert np.all([self.reward_function[k].shape == (self.n_states,) for k in range(self.n_actions)])
         # all transition matrix are stochastic
-        assert np.all([self.transition_kernel[k].sum(axis=1) == 1 for k in range(self.n_actions)])
+        print([self.transition_kernel[k].sum(axis=1) == 1.0 for k in range(self.n_actions)])
+        assert np.allclose(
+            [self.transition_kernel[k].sum(axis=1) for k in range(self.n_actions)],
+            np.ones((self.n_actions, self.n_states)),
+        )
         assert np.all([self.transition_kernel[k].min() >= 0 for k in range(self.n_actions)])
 
 
