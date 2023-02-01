@@ -3,11 +3,15 @@ Value iteration for discounted and average-gain MDPs
 """
 
 import logging
+from typing import Union, Tuple
+
 import numpy as np
 
 from math import log
 from tqdm import tqdm
+from restless.control.mdp import MarkovDecisionProcess as MDP
 from restless.control.mdp import DiscountedMarkovDecisionProcess as DiscountedMDP
+
 
 logger = logging.getLogger(__name__)
 
@@ -54,3 +58,62 @@ def discounted_value_iterations(mdp: DiscountedMDP, precision: float, max_iter: 
         value = next_value
 
     return value
+
+
+def relative_value_iteration(
+    mdp: MDP, precision: float, max_iter: int = 1_000, return_bias: bool = False
+) -> Union[float, Tuple[float, np.array]]:
+    """
+    Runs the relative VI algorithm to find the optimal (gain, bias) couple in an average-gain MDP.
+    Goal is to find it up to :param precision: with at most :param max_iter: iterations.
+    .. warnings:: This assumes that the MDP is at least weakly-communicating. We don't check this property,
+    so use at your own risk.
+    :return: the estimated mdp's optimal gain, as well as its associated bias (differential value function)
+    if :param return_bias: is set to True.
+    """
+    # aperiodicity transform
+    tau = 0.05  # default value, should not require tuning
+    aperiodic_mdp = mdp.to_aperiodic_mdp(tau)
+
+    # single step relative value iteration
+    def single_step_rvi(value: np.array):
+        normalized_value = value
+        return np.array(
+            [
+                np.max(
+                    [
+                        aperiodic_mdp.reward_function[action]
+                        + aperiodic_mdp.transition_kernel[action] @ normalized_value
+                        for action in range(mdp.n_actions)
+                    ],
+                    axis=0,
+                )
+            ]
+        ).reshape((mdp.n_states,))
+
+    # many steps relative value iteration
+    logger.debug(f"Running RVI for {max_iter} steps")
+    value = np.zeros((mdp.n_states,))
+    for t in tqdm(range(max_iter)):
+        next_value = single_step_rvi(value)
+        # checks convergence via span semi-norm
+        span = np.max(next_value - value) - np.min(next_value - value)
+        if span < precision:  # span semi-norm convergence
+            logger.debug(f"Detected convergence at step {t}")
+            break
+
+        if t + 1 < max_iter:
+            logger.warning(f"Relative value iteration stopped at max. iteration. Span semi-norm is {span}.")
+            value = next_value
+
+    # return bias and gain
+    aperiodic_gain = 0.5 * (np.max(next_value - value) + np.min(next_value - value))
+    gain = aperiodic_gain / tau
+    if not return_bias:
+        return gain
+
+    else:
+        aperiodic_bias = next_value - next_value[0]
+        bias = aperiodic_bias  # / tau
+
+        return gain, bias
