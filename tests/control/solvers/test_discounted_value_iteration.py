@@ -22,7 +22,7 @@ def random_transition_kernel(n_states, n_actions):
 
 @pytest.mark.parametrize(
     "n_states, n_actions, discount, precision",
-    [(2, 2, 0.9, 0.1), (2, 2, 0.9, 1e-3), (2, 3, 0.5, 1e-2), (4, 4, 0.95, 1e-2), (50, 10, 0.995, 1e-3)],
+    [(2, 2, 0.9, 1e-5), (2, 2, 0.9, 1e-3), (2, 3, 0.5, 1e-2), (4, 4, 0.95, 1e-2), (50, 10, 0.995, 1e-3)],
 )
 def test_bellman_equation_valid(n_states, n_actions, discount, precision):
     """
@@ -46,8 +46,9 @@ def test_bellman_equation_valid(n_states, n_actions, discount, precision):
         ]
     ).reshape((mdp.n_states,))
 
+    bellman_equation_precision = (1 + discount) * precision
     np.testing.assert_array_almost_equal(
-        bellman_equation, np.zeros((n_states,)), decimal=np.floor(np.log10(1 / precision))
+        bellman_equation, np.zeros((n_states,)), decimal=np.floor(np.log10(1 / bellman_equation_precision))
     )
 
 
