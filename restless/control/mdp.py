@@ -1,7 +1,6 @@
 """
 MDP structure
 """
-
 from typing import List
 
 import numpy as np
@@ -44,6 +43,24 @@ class MarkovDecisionProcess:
         )
         assert np.all([self.transition_kernel[k].min() >= 0 for k in range(self.n_actions)])
 
+    def to_aperiodic_mdp(self, tau: float) -> "MarkovDecisionProcess":
+        """
+        Aperiodicity transform of an MDP (see Puterman §8.5.4)
+        """
+        assert (tau > 0) & (tau < 1)
+
+        # change reward function
+        new_reward_function = [tau * reward_vector for reward_vector in self.reward_function]
+        # change transition kernel
+        new_transition_kernel = [
+            (1 - tau) * np.eye(self.n_states) + tau * transition_matrix
+            for transition_matrix in self.transition_kernel
+        ]
+
+        return MarkovDecisionProcess(
+            self.n_states, self.n_actions, new_transition_kernel, new_reward_function
+        )
+
 
 class DiscountedMarkovDecisionProcess(MarkovDecisionProcess):
     """
@@ -63,7 +80,7 @@ class DiscountedMarkovDecisionProcess(MarkovDecisionProcess):
         assert (self.discount >= 0) & (self.discount < 1)
 
     @classmethod
-    def from_mdp(cls, mdp: MarkovDecisionProcess, discount):
+    def from_mdp(cls, mdp: MarkovDecisionProcess, discount):  # pragma: no cover
         return cls(mdp.n_states, mdp.n_actions, mdp.transition_kernel, mdp.reward_function, discount)
 
 

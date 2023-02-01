@@ -45,3 +45,13 @@ def test_mdp_reward_structure(reward_function, expected_fail):
         with pytest.raises(Exception):
             _ = MDP(2, 2, transition_matrix, reward_function)
 
+
+def test_aperiodicity_transform():
+    transition_kernel = 2*[np.fliplr(np.eye(2))]
+    reward_function = [np.array([0, 1]), np.array([1, 1])]
+
+    mdp = MDP(2, 2, transition_kernel, reward_function)
+    aperiodic_mdp = mdp.to_aperiodic_mdp(tau=0.1)
+
+    for action in range(2):
+        assert np.all(np.diag(aperiodic_mdp.transition_kernel[action])>0)
