@@ -11,3 +11,5 @@ from restless.control.solvers.policy_evaluation import (
     discounted_policy_evaluation,
     average_reward_policy_evaluation,
 )
+
+from restless.control.solvers.value_iteration import discounted_value_iterations
