@@ -103,8 +103,9 @@ def relative_value_iteration(
             break
 
         if t + 1 < max_iter:
-            logger.warning(f"Relative value iteration stopped at max. iteration. Span semi-norm is {span}.")
             value = next_value
+        else:
+            logger.warning(f"Relative value iteration stopped at {max_iter}. Span semi-norm is {span}.")
 
     # return bias and gain
     aperiodic_gain = 0.5 * (np.max(next_value - value) + np.min(next_value - value))
