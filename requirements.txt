@@ -4,4 +4,3 @@ scipy
 pandas
 matplotlib
 tqdm
-logging

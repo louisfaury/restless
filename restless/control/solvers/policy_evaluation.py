@@ -6,7 +6,9 @@ from typing import Tuple, Union
 import numpy as np
 from scipy.linalg import eigvals
 
-from restless.control import MDP, DiscountedMDP, Policy
+from restless.control.mdp import MarkovDecisionProcess as MDP
+from restless.control.mdp import DiscountedMarkovDecisionProcess as DiscountedMDP
+from restless.control.policy import Policy
 
 
 def get_reward_vector(pi: Policy, mdp: MDP) -> np.array:
