@@ -1,7 +1,16 @@
 """
-A simple experiment in a MultiChannelAccess scenario
-Myopic vs. BestStationaryArm
+usage: myopic_multi_channel_access_exp.py [-h] [-n N] [-p P] [-q Q] [-hz HZ]
+
+Myopic vs. BestStationaryArm in a MultiChannelAccess scenario
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -n N        Number of arms (default: None)
+  -p P        Proba p (staying in 1) (default: None)
+  -q Q        Proba q (transitioning to 1) (default: None)
+  -hz HZ      Horizon (default: 1000)
 """
+import argparse
 import matplotlib.pyplot as plt
 
 from restless.agents import BestStationaryArmAgent, Myopic
@@ -9,11 +18,7 @@ from restless.envs import ChannelAccessMAB
 from restless.bandit_game import run_exp
 
 
-def main() -> None:
-    n_arms = 10
-    horizon = 300
-    p, q = 0.8, 0.4
-
+def main(n_arms: int, p: float, q: float, horizon: int) -> None:
     # Environment
     env = ChannelAccessMAB(n_arms, p, q)
 
@@ -46,4 +51,13 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Myopic vs. BestStationaryArm in a MultiChannelAccess scenario",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument("-n", type=int, help="Number of arms")
+    parser.add_argument("-p", type=float, help="Proba p (staying in 1)")
+    parser.add_argument("-q", type=float, help="Proba q (transitioning to 1)")
+    parser.add_argument("-hz", type=int, default=100, help="Horizon")
+    args = parser.parse_args()
+    main(args.n, args.p, args.q, args.hz)
