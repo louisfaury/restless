@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    restless.agents
+   restless.control
    restless.envs
    restless.scripts
 

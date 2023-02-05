@@ -12,6 +12,14 @@ Subpackages
 Submodules
 ----------
 
+restless.envs.mdp\_convert module
+---------------------------------
+
+.. automodule:: restless.envs.mdp_convert
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 restless.envs.restless\_env module
 ----------------------------------
 

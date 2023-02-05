@@ -65,11 +65,17 @@ def relative_value_iteration(
 ) -> Union[float, Tuple[float, np.array]]:
     """
     Runs the relative VI algorithm to find the optimal (gain, bias) couple in an average-gain MDP.
-    Goal is to find it up to :param precision: with at most :param max_iter: iterations.
-    .. warnings:: This assumes that the MDP is at least weakly-communicating. We don't check this property,
-    so use at your own risk.
-    :return: the estimated mdp's optimal gain, as well as its associated bias (differential value function)
-    if :param return_bias: is set to True.
+    Goal is to find it up to some precision, given some maximum number of iterations.
+
+    .. warning:: This assumes that the MDP is at least weakly-communicating. We don't check this property,
+        so use at your own risk.
+    :param precision: Desired accuracy level
+    :type precision: float
+    :param max_iter: Maximum number of iterations
+    :type max_iter: int
+    :param return_bias: Wether to return the associated differential value function
+    :type return_bias: bool
+    :return: (g, h) the estimated mdp's optimal gain, as well as its associated bias (differential value function).
     """
     # aperiodicity transform
     tau = 0.05  # default value, should not require tuning

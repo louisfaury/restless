@@ -8,6 +8,12 @@ Welcome to restless's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: Basics:
+
+   readme
+
+.. toctree::
+   :maxdepth: 2
    :caption: Contents:
 
    modules
