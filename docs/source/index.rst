@@ -3,18 +3,22 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to restless's documentation!
+restless
 ====================================
 
+*Experiment with Restless Bandits, in Python.*
+
+Evaluate and compare (approximate) POMDP solvers, as well as heuristics and Reinforcement Learning algorithms on a variety of Restless Bandits problems.
+
 .. toctree::
-   :maxdepth: 2
-   :caption: Basics:
+   :maxdepth: 1
+   :caption: Set-up:
 
    readme
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 4
+   :caption: Documentation:
 
    modules
 
