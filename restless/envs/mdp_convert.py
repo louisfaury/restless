@@ -18,7 +18,32 @@ def convert_channel_to_mdp(
     chanel_mab: ChannelAccessMAB, truncate: int = 10, return_belief_idx: bool = False
 ) -> Union[MDP, Tuple[MDP, Tuple[Dict, Dict]]]:
     """
-    Belief MDP for a ChannelAccessMAB (easier and less expensive than general case)
+    Belief-MDP for a ChannelAccessMAB. The existence of only two states per-chain and the problem's symmetry
+    allow for an easier derivation than in the general case.
+
+    The belief-MDP must be finite; it is therefore truncated. Formally, the truncated  belief space will write:
+
+    .. math::
+        \mathcal{B} = \{ s^\\top P^t;\, s\in\mathcal{S}, t\leq \\tau \}\; .
+
+    where :math:`\\tau` is the truncation parameter (`truncate`).
+
+
+    Parameters
+    ----------
+    chanel_mab : ChannelAccessMAB
+    truncate : int
+        The truncation size
+    return_belief_idx : bool
+        Whether to return the map from belief (actual value) to their index in the finite (truncated) belief-MDP
+
+    Returns
+    -------
+    mdp : MarkovDecisionProcess
+        The (truncated) belief MDP
+    belief_idx_map: Tuple(Dict, Dict)
+        The (idx -> belief) and (belief -> idx) maps
+
     """
     logger.info(f"Converting ChannelMAB access with truncate={truncate}")
     p = chanel_mab.p

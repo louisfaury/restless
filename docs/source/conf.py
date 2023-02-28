@@ -22,7 +22,8 @@ extensions = [
     'sphinx_rtd_theme',
     'recommonmark',
     'sphinx.ext.todo',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinx.ext.mathjax'
 ]
 source_suffix = [".rst", ".md"]
 
