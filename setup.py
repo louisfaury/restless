@@ -12,11 +12,12 @@ install_reqs = [r.requirement for r in parse_requirements(USER_REQUIREMENTS, ses
 
 setup(
     name="restless",
-    version="0.0",
-    packages=find_packages(exclude=["tests"]),
+    version="0.1",
+    packages=find_packages(include=["restless", "restless/*"]),
     python_requires=">=3.6",
     license="Apache License 2.0",
     author="Louis Faury",
     author_email="l.faury@criteo.com",
     description="Restless Bandit Simulator",
+    install_requires=install_reqs,
 )

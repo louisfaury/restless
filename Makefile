@@ -1,9 +1,8 @@
 install: ## [Local development, CPU] Upgrade pip, install requirements, install package.
 	python -m pip install -U pip && python -m pip install -U setuptools wheel
-	python -m pip install -r requirements.txt
 	python -m pip install -e "."
 
-install-dev: ## [Local development] Install test requirements and pre-commit
+install-dev: ## [Local development] install test requirements
 	python -m pip install -r test-requirements.txt
 
 lint:
