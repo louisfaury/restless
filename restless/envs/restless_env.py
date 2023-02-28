@@ -19,8 +19,19 @@ class RestlessMAB:  # pylint: disable=too-few-public-methods
 
     def sense(self, arm: int) -> Tuple[int, float]:
         """
-        Returns the current state and reward for the selected arm
-        Update all arms
+        Observe the current state and reward for the selected arm and update all arms.
+
+        Parameters
+        ----------
+        arm : int
+            The pulled arm
+
+        Returns
+        -------
+        state : int
+            The observed state
+        reward : float
+            The observed reward
         """
         assert arm < len(self.arm_list)
         state, reward = self.arm_list[arm].sense()
