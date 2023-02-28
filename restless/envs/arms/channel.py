@@ -16,8 +16,12 @@ class Channel(MarkovArm):
 
     def __init__(self, p: float, q: float, init_state: int = 1):
         """
-        p: probability of staying in 1 starting from 1
-        q: probability of going to 1 starting from 0
+        Parameters
+        ----------
+        p : float
+            Probability of staying in 1 starting from 1
+        q : float
+            Probability of going to 1 starting from 0
         """
         transition_matrix = np.array([[1 - q, q], [1 - p, p]])
         reward_vector = np.array([0, 1])
@@ -32,7 +36,7 @@ class Channel(MarkovArm):
 
     def stationary_distribution(self):
         """
-        In this case we have a closed form for the stationary distribution
+        For channel arms we have a closed form for the stationary distribution
         """
         p = self.p
         q = self.q

@@ -1,7 +1,5 @@
 """
 Markovian arm structure
-
-TODO: Protect state
 """
 
 from typing import Tuple
@@ -13,8 +11,6 @@ import scipy.linalg
 class MarkovArm:
     """
     Simple Markovian Arm (e.g. reward is a Markov chain)
-
-    Then transition matrix must be a stochastic matrix (each row sum to 1, only positive entries)
     """
 
     def __init__(
@@ -24,6 +20,18 @@ class MarkovArm:
         reward_vector: np.array,
         init_state: int = 0,
     ):
+        """
+        Parameters
+        ----------
+        n_states : int
+            Number of state in the Markov Chain
+        transition_matrix : np.array
+            MC's transition kernel, must be a stochastic matrix (will raise an error if not)
+        reward_vector : np.array
+            Defines the rewards associated with each state
+        init_state : int
+            Initial state
+        """
         self.n_states = n_states
 
         assert np.shape(transition_matrix)[0] == np.shape(transition_matrix)[1]
@@ -65,12 +73,14 @@ class MarkovArm:
         "Returns current state and associated reward"
         return self.state, self.reward()
 
-    def stationary_distribution(self):
+    def stationary_distribution(self) -> np.array:
         """
-        Returns the Markov chain's stationary distribution
-        Watch out: we assume existence and uniqueness of the stationary distribution
-                    i.e. the chain is ergodic
-                    i.e. the transition matrix has eigen-value 1 with multiplicity 1
+        Compute the Markov chain's stationary distribution
+
+        .. warning:: We assume existence and uniqueness of the stationary distribution
+            i.e. the chain is ergodic (the transition matrix has left eigen-value 1 with multiplicity 1)
+        :return: the MC's stationary distribution's vector
+        :rtype: np.array
         TODO: implement further check for MC ergodicity
         TODO: the current checks are a bit sketchy (or downright false) -- eigen-values are complex numbers!
         """
