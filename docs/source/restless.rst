@@ -10,7 +10,6 @@ Subpackages
    restless.agents
    restless.control
    restless.envs
-   restless.scripts
 
 Submodules
 ----------
