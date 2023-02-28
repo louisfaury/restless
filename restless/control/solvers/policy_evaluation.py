@@ -1,5 +1,6 @@
 """
 Policy evaluation for finite horizon, discounted and average MDPs
+TODO:
 """
 from typing import Tuple, Union
 
@@ -37,10 +38,10 @@ def average_reward_policy_evaluation(
 ) -> Union[float, Tuple[float, np.array]]:
     """
     Policy evaluation for an average-gain MDP
-    *Important* Assumes that the policy's gain is constant,
-                i.e that the policy induces a Markov chain with a single recurrent class
-    If unsure about this property, you can pass a parameter (:check_nb_irreducible_class:) that will trigger
-    an error if the chain's has several irreducible class.
+    ..warning: Assumes that the policy's gain is constant,
+        i.e that the policy induces a Markov chain with a single recurrent class.
+        If unsure about this property, you can pass a parameter (:check_nb_irreducible_class:) that will trigger
+        an error if the chain's has several irreducible class.
 
     Returns the policy's constant gain, as well as the bias vector if return_bias is set to True.
     """
