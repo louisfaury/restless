@@ -5,7 +5,7 @@ Testing discounted value iteration
 import numpy as np
 import pytest
 
-from restless.control import MDP, relative_value_iteration
+from restless.control import MDP, value_iteration
 from .test_discounted_value_iteration import random_transition_kernel
 
 
@@ -21,7 +21,7 @@ def test_bellman_equation_valid(n_states, n_actions, precision):
     transition_kernel = random_transition_kernel(n_states, n_actions)
     mdp = MDP(n_states, n_actions, transition_kernel, reward_function)
 
-    gain, bias = relative_value_iteration(mdp, precision, return_bias=True)
+    gain, bias = value_iteration(mdp, precision, return_bias=True)
 
     bellman_equation = (
         gain * np.ones((n_states,))
@@ -61,4 +61,4 @@ def test_relative_value_iteration_constant_reward(discount, reward):
     reward_vector = 2 * [reward * np.ones((2,))]
     mdp = MDP(2, 2, transition_matrix, reward_vector)
 
-    np.testing.assert_array_almost_equal(relative_value_iteration(mdp, 1e-3), reward * np.ones((2,)), decimal=3)
+    np.testing.assert_array_almost_equal(value_iteration(mdp, 1e-3), reward * np.ones((2,)), decimal=3)

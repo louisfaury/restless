@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-from restless.control import MyopicPolicy, relative_value_iteration, average_reward_policy_evaluation
+from restless.control import MyopicPolicy, value_iteration, average_reward_policy_evaluation
 from restless.envs import ChannelAccessMAB
 from restless.envs.mdp_convert import convert_channel_to_mdp
 
@@ -40,7 +40,7 @@ def main(n_arms, p, q, truncate):
 
     # average-gain policy evaluation
     logger.info("Computing optimal gain and differential value function")
-    optimal_gain, optimal_bias = relative_value_iteration(
+    optimal_gain, optimal_bias = value_iteration(
         channel_mdp, max_iter=10_000, precision=1e-5, return_bias=True
     )
     logger.info(f"Optimal average-gain is rho={optimal_gain}")
