@@ -11,7 +11,7 @@ This package is developed in order to compare policies (e.g. fixed-arm, myopic o
 A particuliar focus is put on a somehow simplified version of RMAB known as Opportunistic MultiChannelAccess -- in this case, all Markov Chain have only 2 states and share the same transition kernel. 
 ## Usage
 
-Usage examples can be found in the folder `restless/scripts`. They include *e.g.* visulazing the belief trajectories under a myopic policy, running relative value iteration for the average-gain discounted MDP, visualizing differential values functions,  ..
+Usage examples can be found in the folder `experiments/`. They include *e.g.* visulazing the belief trajectories under a myopic policy, running relative value iteration for the average-gain discounted MDP, visualizing differential values functions,  ..
 
 
 

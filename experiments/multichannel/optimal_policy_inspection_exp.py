@@ -43,14 +43,11 @@ def main(n_arms, p, q, truncate):
     optimal_gain, optimal_bias = relative_value_iteration(
         channel_mdp, max_iter=10_000, precision=1e-5, return_bias=True
     )
-    # TODO: improving policy of optimal gain
     logger.info(f"Optimal average-gain is rho={optimal_gain}")
 
     # myopic policy
     pi = MyopicPolicy(channel_mdp)
-    myopic_gain, _ = average_reward_policy_evaluation(
-        pi, channel_mdp, True, check_nb_irreducible_class=False
-    )
+    myopic_gain, _ = average_reward_policy_evaluation(pi, channel_mdp, True, check_nb_irreducible_class=False)
     logger.info(f"Myopic average-gain is rho={myopic_gain}")
 
     if np.abs(optimal_gain - myopic_gain) < 1e-4:

@@ -45,7 +45,7 @@ def main(n_arms: int, p: float, q: float, horizon: int) -> None:
     plt.plot([0, horizon], [stationary_distribution, stationary_distribution], label="stationary")
     plt.xlabel("Round")
     plt.ylabel("Belief")
-    plt.title("Evolution of belief's under a myopic strategy")
+    plt.title("Evolution of beliefs under a myopic strategy")
     plt.legend()
     plt.show()
 
