@@ -105,7 +105,7 @@ def value_iteration(
     max_iter : int
         Maximum number of iterations
     return_bias: Optional[bool]
-        Wether to return the associated differential value function
+        Whether to return the associated differential value function
 
     Returns
     -------
