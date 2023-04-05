@@ -80,7 +80,7 @@ class DiscountedMarkovDecisionProcess(MarkovDecisionProcess):
         assert (self.discount >= 0) & (self.discount < 1)
 
     @classmethod
-    def from_mdp(cls, mdp: MarkovDecisionProcess, discount):  # pragma: no cover
+    def from_mdp(cls, mdp: MarkovDecisionProcess, discount: float):  # pragma: no cover
         return cls(mdp.n_states, mdp.n_actions, mdp.transition_kernel, mdp.reward_function, discount)
 
 
